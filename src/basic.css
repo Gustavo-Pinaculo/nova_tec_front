@@ -1,0 +1,73 @@
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Inter', sans-serif;
+  }
+  
+  h1 {
+    font-size: 56px;
+  }
+  
+  h2 {
+    font-size: 48px;
+  }
+  
+  h3 {
+    font-size: 36px;
+  }
+  
+  h4 {
+    font-size: 24px;
+  }
+  
+  h5 {
+    font-size: 18px;
+  }
+  
+  h6 {
+    font-size: 16px;
+  }
+  
+  button {
+    cursor: pointer;
+  }
+  
+  * {
+    transition: all;
+    transition-duration: 300ms;
+    transition-timing-function: ease-in-out;
+  }
+  
+  *::-webkit-scrollbar {
+    height: 6px;
+    width: 6px;
+  }
+  
+  *::-webkit-scrollbar-track {
+    border-radius: 5px;
+    background-color: var(--bg-soft-200);
+  }
+  
+  *::-webkit-scrollbar-track:hover {
+    background-color: var(--bg-sub-300);
+  }
+  
+  *::-webkit-scrollbar-track:active {
+    background-color: var(--bg-sub-300);
+  }
+  
+  *::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background-color: var(--color-primary-base);
+  }
+  
+  *::-webkit-scrollbar-thumb:hover {
+    background-color: var(--state-information-dark);
+  }
+  
+  *::-webkit-scrollbar-thumb:active {
+    background-color: var(--state-information-dark);
+  }
