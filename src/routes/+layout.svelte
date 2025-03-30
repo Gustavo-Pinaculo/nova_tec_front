@@ -8,6 +8,6 @@
 <svelte:head><title>Nova Tec</title></svelte:head>
 <Toaster/>
 
-<div class="w-screen h-svh overflow-x-hidden overflow-y-auto bg-white-0">
+<div class="w-screen h-svh overflow-x-hidden overflow-y-auto bg-[#F5F5F6]">
 	{@render children()}
 </div>
