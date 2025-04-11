@@ -32,6 +32,7 @@
       onEnter,
     }: Props = $props();
   
+    let security = $state<boolean>(false)
     let focused = $state<boolean>(false)
     let error = $state<string>("")
   
@@ -65,7 +66,18 @@
           {#if Icon}
             <Icon props={{width:15,height:13}}/>
           {/if}
+          {#if security}
           <input {disabled} type="text" name="input" bind:value onfocus={handleFocus} onblur={handleBlur} onkeydown={handleEnter}
             class="w-full outline-none text-sm disabled:text-disabled-300" />
-        </div>
+          {:else}
+            <input {disabled} type="password" name="input" bind:value onfocus={handleFocus} onblur={handleBlur} onkeydown={handleEnter}
+            class="w-full outline-none text-sm disabled:text-disabled-300" />
+          {/if}
+            <button onclick={() => security = !security}>
+              <img src="/icons/eye-icon.svg" alt="" class="absolute right-2 cursor-pointer" />
+            </button>
+          </div>
+        {#if error && error.length > 0}
+            <p class="text-xs text-red-700">{error}</p>
+        {/if}
     </div>
