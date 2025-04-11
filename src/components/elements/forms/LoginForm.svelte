@@ -11,7 +11,7 @@
     })
 
     async function login() {
-        const [res, err] = await apiService.post('/login', body);
+        const [res, err] = await apiService.post('/login/', body);
         if(err) return toast.error('Erro ao efetuar login', err);
         console.log(res)
     }
@@ -19,8 +19,8 @@
 
 <div class="flex flex-col h-full justify-center gap-3">
     <span>
-        <h4>Login</h4>
-        <p>Preencha os campos para efetuar o login  </p>
+        <h1>Login</h1>
+        <p>Preencha os campos para efetuar o login</p>
         <MainInput bind:value={body.username} label="Usuário" placeholder="Usuário" mandatory={true}/>
         <PassInput bind:value={body.password} label="Senha" placeholder="Senha" mandatory={true} />
         <MainButton label="Entrar" action={login}/>

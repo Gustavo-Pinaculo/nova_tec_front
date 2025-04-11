@@ -1,30 +1,30 @@
-import { browser } from "$app/environment";
-import { PUBLIC_BACKEND_URL } from "$env/static/public";
 import axios, { type AxiosError, type AxiosInstance, type InternalAxiosRequestConfig } from "axios";
 
+import { PUBLIC_BACKEND_URL } from "$env/static/public";
+import { browser } from "$app/environment";
+
 class ApiService{
-    private readonly URL: string;
     private axiosInstance: AxiosInstance;
+    private readonly URL: string;
+
     constructor(){
         this.URL = PUBLIC_BACKEND_URL ?? 'http://localhost:8000';
         this.axiosInstance = axios.create({
             baseURL: this.URL,
-
             headers: {
                 "Content-Type": "application/json",
             },
         });
 
-        this.axiosInstance.interceptors.request.use(
-            this.handleRequest,
-        );
+        this.axiosInstance.interceptors.request.use(this.handleRequest,);
     }
 
     private handleRequest( config: InternalAxiosRequestConfig<any>): InternalAxiosRequestConfig<any> {
         if(!browser){
             throw new Error("Componente não renderizado ao lado do cliente para pegar o localstorage")
         }
-        config.headers["Authorization"] = `token ${localStorage.getItem("nova-tec-token")}`;
+        if(!localStorage.getItem("nova-tec-token")) return config;
+        config.headers["Authorization"] = `Token ${localStorage.getItem("nova-tec-token")}`;
         return config;
     }
 

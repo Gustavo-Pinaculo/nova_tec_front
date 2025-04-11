@@ -22,6 +22,8 @@
 <div class="flex flex-start w-full h-full">
     <Sidebar/>
     {#if hasPermission}
+    <div class="flex flex-col w-full h-full px-10 py-6 gap-7">
         {@render children()}
+    </div>
     {/if}
 </div>
