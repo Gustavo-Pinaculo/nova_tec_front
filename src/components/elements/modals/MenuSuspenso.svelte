@@ -42,7 +42,7 @@
     {#if mostrarOpcoes}
         <div class="absolute {posicao} flex flex-col p-1 bg-white rounded-md border border-[#F5F5F6] z-10">
             {#each opcoes as {label, action}}
-                <button class="flex items-center p-2 rounded-sm text-sub-600 text-xs min-w-[6rem] hover:bg-gray-400 transition-colors" onclick={()=>chamarAcao(action)}>
+                <button class="flex items-center p-2 rounded-sm text-sub-600 text-xs min-w-[6rem] hover:bg-[#25384B] hover:text-white transition-colors" onclick={()=>chamarAcao(action)}>
                     {label}
                 </button>
             {/each}
