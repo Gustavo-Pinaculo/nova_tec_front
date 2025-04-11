@@ -38,6 +38,7 @@
   
     $effect(() => {
       if (sanitize) value = sanitize(value);
+      if(value.length>0) focused = true 
     });
 
     function handleEnter(e:KeyboardEvent){
@@ -52,6 +53,7 @@
         focused = true
         error = "";
     }
+    
   </script>
 
     <div class="flex flex-col gap-2 relative border {focused ? 'border-[#25384B]' : 'border-[#00000066]'} rounded-xl" title={tip}>
@@ -74,7 +76,8 @@
             class="w-full outline-none text-sm disabled:text-disabled-300" />
           {/if}
             <button onclick={() => security = !security}>
-              <img src="/icons/eye-icon.svg" alt="" class="absolute right-2 cursor-pointer" />
+              {!security ?'Ver': 'Ocultar'}
+              <!-- <img src="/icons/eye-icon.svg" alt="" class="absolute right-2 cursor-pointer" /> -->
             </button>
           </div>
         {#if error && error.length > 0}

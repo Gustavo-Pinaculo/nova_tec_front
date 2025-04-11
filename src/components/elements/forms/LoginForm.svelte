@@ -2,16 +2,19 @@
 	import MainButton from "$components/assets/buttons/MainButton.svelte";
 	import MainInput from "$components/assets/inputs/MainInput.svelte";
 	import PassInput from "$components/assets/inputs/PassInput.svelte";
+	import apiService from "$lib/api/api";
+	import toast from "$lib/utils/toasts.svelte";
 
     let body = $state({
         username: '',
         password: ''
     })
 
-    function login() {
-
+    async function login() {
+        const [res, err] = await apiService.post('/login', body);
+        if(err) return toast.error('Erro ao efetuar login', err);
+        console.log(res)
     }
-
 </script>
 
 <div class="flex flex-col h-full justify-center gap-3">
