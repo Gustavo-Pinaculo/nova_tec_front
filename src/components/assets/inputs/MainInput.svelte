@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { Signal, sinal } from "$lib/utils/sinalizador";
     import type { SVGAttributes } from "svelte/elements";
     import type { Component } from "svelte";
   
@@ -6,7 +7,7 @@
       value: string;
       label: string;
       subLabel?:string;
-      placeholder: string;
+      placeholder?: string;
       Icon?: Component<{ props?: SVGAttributes<SVGSVGElement> }>;
       mandatory?: boolean;
       tip?: string;
@@ -37,6 +38,11 @@
   
     $effect(() => {
       if (sanitize) value = sanitize(value);
+      if(value.length>0) {
+        focused = true
+        error = validate()
+      }
+      if($sinal === Signal.VALIDAR_INPUTS) error = validate()
     });
 
     function handleEnter(e:KeyboardEvent){
@@ -54,7 +60,7 @@
   </script>
 
     <div class="flex flex-col gap-2 relative border {focused ? 'border-[#25384B]' : 'border-[#00000066]'} rounded-xl" title={tip}>
-        <p class="text-sm absolute z-0 {focused ? 'top-[-25%] left-2 bg-white px-1' : 'top-[25%] left-3'} pointer-events-none {error && error.length > 0 ? 'text-red-700' : ''}">
+        <p class="text-sm font-medium absolute z-0 {focused ? 'text-[#25384B] top-[-30%] left-2 bg-white px-1' : 'text-[#21252966] top-[25%] left-3'} pointer-events-none {error && error.length > 0 ? 'text-red-700' : ''}">
             {label}
             {#if mandatory}
                 <span class="text-red-700">*</span>

@@ -1,11 +1,11 @@
 <script>
+	import MenuSuspenso from "$components/elements/modals/MenuSuspenso.svelte";
+	import PrintButton from "$components/assets/buttons/PrintButton.svelte";
 	import MainButton from "$components/assets/buttons/MainButton.svelte";
 	import Tabela from "$components/elements/tables/Tabela.svelte";
+	import SvgChevr from "$components/assets/svg/SvgChevr.svelte";
 	
     import { goto } from "$app/navigation";
-	import MenuSuspenso from "$components/elements/modals/MenuSuspenso.svelte";
-	import SvgChevr from "$components/assets/svg/SvgChevr.svelte";
-	import PrintButton from "$components/assets/buttons/PrintButton.svelte";
 
     const headers = [
         { label:'Seleção', colSpan:'col-span-1' },
