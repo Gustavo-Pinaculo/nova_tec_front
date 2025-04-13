@@ -37,12 +37,12 @@
     let error = $state<string>("")
   
     $effect(() => {
+      if($sinal === Signal.VALIDAR_INPUTS) error = validate()
       if (sanitize) value = sanitize(value);
       if(value.length>0) {
         focused = true
         error = validate()
       }
-      if($sinal === Signal.VALIDAR_INPUTS) error = validate()
     });
 
     function handleEnter(e:KeyboardEvent){
@@ -57,8 +57,6 @@
         focused = true
         error = "";
     }
-
-    $inspect(error);
   </script>
 
 <div class="flex flex-col gap-1">
