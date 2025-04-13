@@ -57,21 +57,28 @@
         focused = true
         error = "";
     }
+
+    $inspect(error);
   </script>
 
-    <div class="flex flex-col gap-2 relative border {focused ? 'border-[#25384B]' : 'border-[#00000066]'} rounded-xl" title={tip}>
-        <p class="text-sm font-medium absolute z-0 {focused ? 'text-[#25384B] top-[-30%] left-2 bg-white px-1' : 'text-[#21252966] top-[25%] left-3'} pointer-events-none {error && error.length > 0 ? 'text-red-700' : ''}">
-            {label}
-            {#if mandatory}
-                <span class="text-red-700">*</span>
-            {/if}
-        </p>
-        <div class="flex px-3 text-sm h-10 max-h-10 font-normal items-center gap-2 rounded-lg apply-class-focus input" 
-          data-disabled={disabled ? true : null} data-error={error && error.length > 0 ? true : null}>
-          {#if Icon}
-            <Icon props={{width:15,height:13}}/>
+<div class="flex flex-col gap-1">
+  <div class="flex flex-col gap-2 relative border {focused ? 'border-[#25384B]' : 'border-[#00000066]'} rounded-xl" title={tip}>
+      <p class="text-sm font-medium absolute z-0 {focused ? 'text-[#25384B] top-[-30%] left-2 bg-white px-1' : 'text-[#21252966] top-[25%] left-3'} pointer-events-none {error && error.length > 0 ? 'text-red-700' : ''}">
+          {label}
+          {#if mandatory}
+              <span class="text-red-700">*</span>
           {/if}
-          <input {disabled} type="text" name="input" bind:value onfocus={handleFocus} onblur={handleBlur} onkeydown={handleEnter}
-            class="w-full outline-none text-sm disabled:text-disabled-300" />
-        </div>
-    </div>
+      </p>
+      <div class="flex px-3 text-sm h-10 max-h-10 font-normal items-center gap-2 rounded-lg apply-class-focus input" 
+        data-disabled={disabled ? true : null} data-error={error && error.length > 0 ? true : null}>
+        {#if Icon}
+          <Icon props={{width:15,height:13}}/>
+        {/if}
+        <input {disabled} type="text" name="input" bind:value onfocus={handleFocus} onblur={handleBlur} onkeydown={handleEnter}
+          class="w-full outline-none text-sm disabled:text-disabled-300" />
+      </div>
+  </div>
+  {#if error && error.length > 0}
+      <p class="text-xs font-semibold text-red-700">{error}</p>
+  {/if}
+</div>

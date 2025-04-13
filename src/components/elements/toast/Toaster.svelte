@@ -10,19 +10,19 @@
 
     const getColor = (status:string) => {
       if(toast.tema==="standard"){
-        return "bg-white-0"
+        return "bg-white"
       }
       if(status==="neutral"){
-        return "bg-information-base"
+        return "bg-blue"
       }
       if(status==="error"){
-        return "bg-error-base"
+        return "bg-red-700"
       }
       if(status==="alert"){
-        return "bg-warning-base"
+        return "bg-yellow-500"
       }
       if(status==="success"){
-        return "bg-success-base"
+        return "bg-green"
       }
     }
 

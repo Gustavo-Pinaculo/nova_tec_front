@@ -50,7 +50,7 @@ class ToastManager{
 
         const props = { 
             status: propriedades.status ?? "neutral",
-            duracao: propriedades.duracao ?? 6000
+            duracao: propriedades.duracao ?? 3000
         }
         this.toasts.push({
             titulo,
