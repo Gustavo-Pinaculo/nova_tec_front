@@ -7,6 +7,7 @@
 	import { EnderecosController } from '$lib/enderecos/enderecos.controller';
     import { ClientesController, type cliente } from '$lib/controllers/clientes.controller';
 	import validators from '$lib/sanitizers/validators';
+	import { sinal } from '$lib/utils/sinalizador';
 
     const enderecosController = new EnderecosController();
     const clientesController = new ClientesController();
@@ -35,13 +36,14 @@
     $effect(()=>{
         if(body.cep.length > 8) getEndereco(body.cep)
     })
+$inspect($sinal)
 </script>
 
 
 <div class="w-full px-3 py-1.5 text-sm font-light bg-white text-sub-600 grid grid-cols-10 gap-4">
     <!-- Primeira linha do form -->
     <div class="col-span-6">
-        <MainInput label="Nome" bind:value={body.nome} validate={(v) => validators.validateFieldValue(v ?? '')}/>
+        <MainInput label="Nome" bind:value={body.nome} validate={(value) => validators.validateFieldValue(value!)}/>
     </div>
     <div class="col-span-2">
         <MainInput label="CPF/CNPJ" bind:value={body.documentoFiscal} sanitize={(v)=>sanitizar.cpfcnpj(v)} validate={(v) => validators.validateCpfCnpj(v ?? '')}/>

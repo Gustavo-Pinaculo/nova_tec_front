@@ -11,7 +11,7 @@
       Icon?: Component<{ props?: SVGAttributes<SVGSVGElement> }>;
       mandatory?: boolean;
       tip?: string;
-      validate?:(v?:string)=>string;
+      validate?:(value:string)=>string;
       extraTip?:string;
       disabled?: boolean;
       extraAction?:VoidFunction;
@@ -37,19 +37,16 @@
     let error = $state<string>("")
   
     $effect(() => {
-      if($sinal === Signal.VALIDAR_INPUTS) error = validate()
+      if($sinal === Signal.VALIDAR_INPUTS) error = validate(value)
       if (sanitize) value = sanitize(value);
-      if(value.length>0) {
-        focused = true
-        error = validate()
-      }
+      if(value.length>0) focused = true
     });
 
     function handleEnter(e:KeyboardEvent){
         if(e.key==="Enter" && onEnter) onEnter(value)
     }
     function handleBlur(){
-        if(value.length>0) return error = validate()
+        if(value.length>0) return error = validate(value)
         focused = false
         error = ""
     }

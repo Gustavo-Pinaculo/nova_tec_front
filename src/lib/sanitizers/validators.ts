@@ -12,11 +12,13 @@ class Validators{
     }
 
     validateEqualityFields(field1: string, field2: string, nameField: string) {
+        if(!field1 || !field2) return 'O campo deve ser preenchido';
         if(field1 !== field2) return 'O campo deve ser igual ao campo de' + nameField;
         return '';
     }
 
     validateFieldValue(value: string) {
+        if(!value) return 'O campo deve ser preenchido';
         if(value.length < 3) return 'O campo deve ter pelo menos 3 caracteres';
         return '';
     }
