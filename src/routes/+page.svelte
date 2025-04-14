@@ -3,6 +3,6 @@
 	import { onMount } from "svelte";
 
     onMount(() => {
-        goto("/login")
+        if(localStorage.getItem('nova-tec-token')) {goto("/dashboard")}else {goto("/login")}
     })
 </script>
