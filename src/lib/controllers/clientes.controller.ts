@@ -37,7 +37,6 @@ export class ClientesController{
     }
 
     async deletarCliente(id:string){
-        sendSignal(Signal.VALIDAR_INPUTS);
         return await apiService.delete('/order/client/'+id);
     }
 }
