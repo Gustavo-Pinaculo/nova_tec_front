@@ -24,7 +24,7 @@ class ApiService{
             throw new Error("Componente não renderizado ao lado do cliente para pegar o localstorage")
         }
         if(!localStorage.getItem("nova-tec-token")) return config;
-        config.headers["Authorization"] = `Token ${localStorage.getItem("nova-tec-token")}`;
+        config.headers["Authorization"] = `Bearer ${localStorage.getItem("nova-tec-token")}`;
         return config;
     }
 

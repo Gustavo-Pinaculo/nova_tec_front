@@ -1,10 +1,16 @@
-<script>
+<script lang="ts">
 	import MenuSuspenso from "$components/elements/modals/MenuSuspenso.svelte";
 	import MainButton from "$components/assets/buttons/MainButton.svelte";
 	import Tabela from "$components/elements/tables/Tabela.svelte";
 	import SvgChevr from "$components/assets/svg/SvgChevr.svelte";
+	import toast from "$lib/utils/toasts.svelte";
 	
+	import { ProdutosController } from "$lib/controllers/produtos.controller";
     import { goto } from "$app/navigation";
+	import { onMount } from "svelte";
+	import EmptyState from "$components/sections/layout/EmptyState.svelte";
+
+    const produtosController = new ProdutosController()
 
     const headers = [
         { label:'Seleção', colSpan:'col-span-1' },
@@ -14,7 +20,14 @@
         { label:'Ações', colSpan:'col-span-1' }
     ]
 
-    let openFilters = $state(false)
+    let openFilters:boolean = $state(false)
+    let produtos:any[] = $state([])
+
+    onMount(async() => {
+        const [res, err] = await produtosController.listarProdutos(1)
+        if(err) return toast.error('Erro ao listar produtos', err)
+        produtos = res.data.results
+    })
 
 </script>
 
@@ -56,5 +69,11 @@
 
 {@render header()}
 {@render filtros()}
-<Tabela {headers} children={tabela} gridCols="grid-cols-7"/>
+{#if produtos.length > 0}
+    <Tabela {headers} children={tabela} gridCols="grid-cols-7"/>
+{:else}
+    <EmptyState>
+        <h3 class="font-bold text-2xl">Nenhum produto encontrado</h3>
+    </EmptyState>
+{/if}
 

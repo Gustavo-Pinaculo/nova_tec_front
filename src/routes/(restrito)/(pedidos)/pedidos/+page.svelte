@@ -1,11 +1,17 @@
-<script>
+<script lang="ts">
     import MenuSuspenso from "$components/elements/modals/MenuSuspenso.svelte";
 	import PrintButton from "$components/assets/buttons/PrintButton.svelte";
 	import MainButton from "$components/assets/buttons/MainButton.svelte";
 	import Tabela from "$components/elements/tables/Tabela.svelte";
 	import SvgChevr from "$components/assets/svg/SvgChevr.svelte";
 	
+	import { PedidosController } from "$lib/controllers/pedidos.controller";
     import { goto } from "$app/navigation";
+	import { onMount } from "svelte";
+	import toast from "$lib/utils/toasts.svelte";
+	import EmptyState from "$components/sections/layout/EmptyState.svelte";
+
+    const pedidosController = new PedidosController()
 
     const headers = [
         { label:'Seleção', colSpan:'col-span-1' },
@@ -17,6 +23,14 @@
     ]
 
     let openFilters = $state(false)
+    let pedidos:any[] = $state([])
+
+    onMount(async() => {
+        const [res, err] = await pedidosController.listarPedidos(1)
+        if(err) return toast.error('Erro ao listar pedidos', err)
+        console.log(res)
+        pedidos = res.data.results
+    })
 
 </script>
 
@@ -64,5 +78,11 @@
 
 {@render header()}
 {@render filtros()}
-<Tabela {headers} children={tabela} gridCols="grid-cols-8"/>
+{#if pedidos.length > 0}
+    <Tabela {headers} children={tabela} gridCols="grid-cols-8"/>
+{:else}
+    <EmptyState>
+        <h3 class="font-bold text-2xl">Nenhum pedido encontrado</h3>
+    </EmptyState>
+{/if}
 

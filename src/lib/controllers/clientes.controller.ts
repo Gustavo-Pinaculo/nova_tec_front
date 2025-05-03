@@ -1,3 +1,5 @@
+import apiService from "$lib/api/api";
+import type { ResponseDTO } from "$lib/api/api.dto";
 import { sendSignal, Signal } from "$lib/utils/sinalizador";
 import toast from "$lib/utils/toasts.svelte";
 
@@ -15,6 +17,10 @@ export type cliente = {
 }
 
 export class ClientesController{
+
+    async listarClientes(page:number):Promise<[ResponseDTO,any]> {
+        return await apiService.get('/order/client/?page='+page);
+    }
 
     async cadastrar(cliente:cliente){
         sendSignal(Signal.VALIDAR_INPUTS);

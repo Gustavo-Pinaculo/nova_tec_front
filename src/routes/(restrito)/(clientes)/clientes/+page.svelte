@@ -1,10 +1,16 @@
-<script>
+<script lang='ts'>
     import MenuSuspenso from "$components/elements/modals/MenuSuspenso.svelte";
 	import MainButton from "$components/assets/buttons/MainButton.svelte";
     import Tabela from "$components/elements/tables/Tabela.svelte";
 	import SvgChevr from "$components/assets/svg/SvgChevr.svelte";
 	
     import { goto } from "$app/navigation";
+	import { ClientesController } from "$lib/controllers/clientes.controller";
+	import { onMount } from "svelte";
+	import toast from "$lib/utils/toasts.svelte";
+	import EmptyState from "$components/sections/layout/EmptyState.svelte";
+
+    const clientesController = new ClientesController()
 
     const headers = [
         { label:'Seleção', colSpan:'col-span-1' },
@@ -16,6 +22,14 @@
     ]
 
     let openFilters = $state(false)
+    let clientes:any[] = $state([])
+
+    onMount(async()=>{
+        const [res, err] = await clientesController.listarClientes(1)
+        if(err) return toast.error('Erro ao listar clientes', err)
+        console.log(res)
+        clientes = res.data.results
+    })
 
 </script>
 
@@ -62,5 +76,11 @@
 
 {@render header()}
 {@render filtros()}
+{#if clientes.length > 0}
 <Tabela {headers} children={tabela} gridCols="grid-cols-7"/>
+{:else}
+<EmptyState>
+    <h3 class="font-bold text-2xl">Nenhum cliente encontrado</h3>
+</EmptyState>
+{/if}
 
