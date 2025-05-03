@@ -28,10 +28,11 @@ class ApiService{
         return config;
     }
 
-    private async makeRequest(method: string, url: string, data?: any):Promise<[any,any]>{
+    public async makeRequest(method: string, url: string, data?: any, config?: any):Promise<[any,any]>{
         let res = null;
         let err = null;
         try{
+            if(config) res = await this.axiosInstance.request({method, url, data, ...config});
             res = await this.axiosInstance.request({method, url, data});
         }catch(e){
             err = e;
@@ -53,6 +54,13 @@ class ApiService{
 
     public async delete(url: string):Promise<[any,any]>{
         return await this.makeRequest('delete', url);
+    }
+
+    public async postFormData(url: string, data: FormData):Promise<[any,any]>{
+        return await this.makeRequest('post', url, data, {headers:{'Content-Type': 'multipart/form-data'}});
+    }
+    public async patchFormData(url: string, data: FormData):Promise<[any,any]>{
+        return await this.makeRequest('patch', url+'/', data, {headers:{'Content-Type': 'multipart/form-data'}});
     }
 }
 

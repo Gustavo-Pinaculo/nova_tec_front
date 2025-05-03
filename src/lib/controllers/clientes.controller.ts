@@ -1,18 +1,18 @@
 import apiService from "$lib/api/api";
-import type { ResponseDTO } from "$lib/api/api.dto";
+
 import { sendSignal, Signal } from "$lib/utils/sinalizador";
-import toast from "$lib/utils/toasts.svelte";
+import type { ResponseDTO } from "$lib/api/api.dto";
 
 export type cliente = {
     id?: number,
-    nome: string,
-    documentoFiscal: string,
+    name: string,
+    cpf_cnpj: string,
     cep: string,
-    cidade: string,
-    rua: string,
-    bairro: string,
-    estado: string,
-    numero: string,
+    city: string,
+    street: string,
+    district: string,
+    state: string,
+    number: string,
     whatsapp: string
 }
 
@@ -22,8 +22,22 @@ export class ClientesController{
         return await apiService.get('/order/client/?page='+page);
     }
 
-    async cadastrar(cliente:cliente){
+    async buscarCliente(id:string):Promise<[any,any]> {
+        return await apiService.get('/order/client/'+id);
+    }
+
+    async cadastrar(cliente:FormData){
         sendSignal(Signal.VALIDAR_INPUTS);
-        return toast.alert('Em desenvolvimento','Funcionalidade em intergação com API')
+        return await apiService.postFormData('/order/client/', cliente);
+    }
+
+    async editar(cliente:FormData, id:string){
+        sendSignal(Signal.VALIDAR_INPUTS); 
+        return await apiService.patchFormData('/order/client/'+id, cliente);
+    }
+
+    async deletarCliente(id:string){
+        sendSignal(Signal.VALIDAR_INPUTS);
+        return await apiService.delete('/order/client/'+id);
     }
 }

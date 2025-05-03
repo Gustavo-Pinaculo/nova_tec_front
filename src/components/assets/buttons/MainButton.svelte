@@ -2,11 +2,13 @@
     interface Props {
         label: string;
         action: VoidFunction;
+        padding?: string;
+        bg?: string;
     }
 
-    let { label, action }: Props = $props();
+    let { label, action, padding = 'p-4', bg = 'bg-[#3E9830]' }: Props = $props();
 </script>
 
-<button class="bg-[#3E9830] min-w-48 p-4 rounded-lg text-white" onclick={action}>
+<button class="{bg} min-w-48 {padding} rounded-lg text-white" onclick={action}>
     {label}
 </button>
