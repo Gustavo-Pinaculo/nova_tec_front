@@ -9,13 +9,13 @@ export class ProdutosController {
     async buscarProduto(id:string):Promise<[any,any]> {
         return await apiService.get('/order/product/'+id);
     }
-    async cadastrarProduto(produto:FormData){
+    async cadastrarProduto(produto:any){
         sendSignal(Signal.VALIDAR_INPUTS);
-        return await apiService.postFormData('/order/product/', produto);
+        return await apiService.post('/order/product/', produto);
     }
-    async editarProduto(produto:FormData, id:string){
+    async editarProduto(produto:any, id:string){
         sendSignal(Signal.VALIDAR_INPUTS); 
-        return await apiService.patchFormData('/order/product/'+id, produto);
+        return await apiService.patch('/order/product/'+id, produto);
     }
     async deletarProduto(id:string){
         return await apiService.delete('/order/product/'+id);

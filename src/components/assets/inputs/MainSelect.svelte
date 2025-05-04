@@ -1,5 +1,6 @@
 <script lang="ts">
     import { Signal, sinal } from "$lib/utils/sinalizador";
+	import { constructFromSymbol } from "date-fns/constants";
   
     interface Props {
       value: string;
@@ -27,27 +28,34 @@
     let selected = $state<string>("")
     let error = $state<string>("")
 
-    function handleSelection(v:string){
-        if(!multiple){
-            focused = false
-            error = ""
-            if(value === v){
-                value = ""
-                selected = label
-                return
+    function handleSelection(v: string) {
+        if (!multiple) {
+            focused = false;
+            error = "";
+            if (value === v) {
+                value = "";
+                selected = label;
+                return;
             }
-            value = v
-            selected = options.find(o => o.value === v)!.label
-            return
+            value = v;
+            selected = options.find(o => o.value === v)!.label;
+            return;
         }
-        if(value.includes(v)){
-            value = value.replace(v,'')
-            selected = selected.replace(v,'')
-            return
+        let lista = value
+            .split(',')
+            .map(s => s.trim())
+            .filter(Boolean); // remove vazios
+
+        if (lista.includes(v)) {
+            lista = lista.filter(item => item !== v);
+        } else {
+            lista.push(v);
         }
-        value = value + ',' + v
-        selected = selected + ',' + options.find(o => o.value === v)!.label
+
+        value = lista.join(',');
+        selected = `${lista.length} ${lista.length === 1 ? 'seleção' : 'seleções'}`;
     }
+
     function handleOpen(){
         focused = !focused
     }
@@ -62,15 +70,15 @@
     <div class="flex flex-col gap-2 relative border {disabled ? 'pointer-events-none' : ''} {focused ? 'border-[#25384B]' : 'border-[#00000066]'} rounded-xl"
         title={tip}>
         <button class="text-sm text-start font-medium px-3 h-10 max-h-10 {focused || selected !== "" ? 'text-[#25384B]' : 'text-[#21252966]'}" onclick={handleOpen}>
-            {selected === "" ? label : selected}
+            {selected === "" || value.length === 0 ? label : selected}
             {#if mandatory && value.length === 0}
                 <span class="text-red-700">*</span>
             {/if}
         </button>
         {#if focused}
             <div class="absolute top-12 left-0 right-0 bg-white rounded-xl overflow-hidden border border-[#25384B] z-10">
-                {#each options as {label,value}}
-                    <button onclick={() => handleSelection(value)} class="{selected.includes(label) ? 'bg-[#25384B] text-white' : ''} text-sm text-start w-full font-medium p-3 hover:bg-[#25384B] hover:text-white ">
+                {#each options as {label,value:v}}
+                    <button onclick={() => handleSelection(v)} class="{value.includes(v) ? 'bg-[#25384B] text-white' : ''} text-sm text-start w-full font-medium p-3 hover:bg-[#25384B] hover:text-white ">
                         {label}
                     </button>
                 {/each}

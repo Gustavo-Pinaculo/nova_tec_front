@@ -49,21 +49,23 @@
     async function lidarCadastro(){
         if(updating) return;
         updating = true;
-        const formData = new FormData();
-        formData.append('name', body.name);
-        formData.append('categories', JSON.stringify(body.categories));
-        formData.append('price', body.price.toString());
-        formData.append('notes', body.notes);
-        formData.append('quantity', body.quantity.toString());
-        formData.append('status', body.status);
-        const [_, err] = edition ? await clientesController.editarProduto(formData, id!)
-            : await clientesController.cadastrarProduto(formData);
+        const bodySend = {...body}
+        bodySend.price = body.price.split('R$ ').join('').toString();
+        const [_, err] = edition ? await clientesController.editarProduto(bodySend, id!)
+            : await clientesController.cadastrarProduto(bodySend);
         updating = false;
         if(err) return toast.error('Erro ao cadastrar cliente', err.message);
         toast.success('Sucesso', edition ? 'Cliente editado!' : 'Cliente cadastrado!');
         resetForm();
-        goto('/clientes');
+        goto('/produtos');
     }
+
+    $effect(() => {
+        if(categorie) {
+            const lista = categorie.split(',').map(c => c.trim()).filter(Boolean);
+            body.categories = [...lista];
+        }
+    });
 
     onMount(async() => {
         if(!id) return;

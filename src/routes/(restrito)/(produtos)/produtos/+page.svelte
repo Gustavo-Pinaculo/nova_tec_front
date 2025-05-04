@@ -27,6 +27,7 @@
         const [res, err] = await produtosController.listarProdutos(1)
         if(err) return toast.error('Erro ao listar produtos', err)
         produtos = res.data.results
+        console.log(produtos)
     })
 
 </script>

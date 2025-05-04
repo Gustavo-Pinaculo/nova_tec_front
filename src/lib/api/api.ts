@@ -48,6 +48,10 @@ class ApiService{
         return await this.makeRequest('post', url, data);
     }
 
+    public async patch(url: string, data: any):Promise<[any,any]>{
+        return await this.makeRequest('patch', url, data);
+    }
+
     public async put(url: string, data: any):Promise<[any,any]>{
         return await this.makeRequest('put', url, data);
     }

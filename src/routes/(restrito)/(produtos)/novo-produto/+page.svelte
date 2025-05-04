@@ -7,25 +7,38 @@
 
     const categoriasController = new CategoriasController();
 
+    let categories = $state<{value:string, label:string}[]>([]);
+    let categoriasACadatsrar = $state<string>('');
     let registerCategories = $state(false);
-    let categories = $state<string[]>([]);
     let loading = $state(false);
 
-    async function registrarCategorias(categories:string){
+    async function registrarCategorias() {
         loading = true;
-        const formData = new FormData();
-        categories.split(',').forEach(category => formData.append('name', category));
-        const [_, err] = await categoriasController.cadastrarCategoria(formData);
-        loading = false;
-        if(err) return toast.error('Erro ao cadastrar categoria', err.message);
-        toast.success('Sucesso', 'Categoria cadastrada!');
-        buscarCategorias();
-        registerCategories = false;
+        const categorias = categoriasACadatsrar.split(',').map(c => c.trim()).filter(Boolean);
+        try {
+            const promises = categorias.map(categoria => {
+                const formData = new FormData();
+                formData.append('name', categoria);
+                return categoriasController.cadastrarCategoria(formData);
+            });
+            await Promise.all(promises);
+            toast.success('Sucesso', 'Categoria(s) cadastrada(s)!');
+            buscarCategorias();
+            registerCategories = false;
+        } catch (err: any) {
+            toast.error('Erro ao cadastrar categoria', err.message || 'Erro desconhecido');
+        } finally {
+            loading = false;
+        }
     }
     async function buscarCategorias(){
         const [res, err] = await categoriasController.listarCategorias();
         if(err) return toast.error('Erro ao buscar categorias', err.message);
-        categories = res.data;
+        const data:{id:string, name:string, is_active:boolean}[] = res.data;
+        categories = data.filter(c => c.is_active).map(c => ({
+            value: c.id, label: c.name
+        }));
+
     }
 
     onMount(() => {
@@ -44,10 +57,10 @@
         <div class="bg-white w-[450px] rounded-lg p-3 gap-4 flex flex-col relative shadow-[0px_4px_4px_rgba(0,0,0,0.25)]">
             <h4 class="font-semibold">Insira as categorias que deseja cadastrar</h4>
             <p class="text-sm text-[#212529]">Adicione as categorias em linha separadas por vírgula.<br> Ex: Categoria 1, Categoria 2</p>
-            <textarea class="w-full outline-none text-sm border border-[#00000066] rounded-lg p-2" bind:value={categories}></textarea>
+            <textarea class="w-full outline-none text-sm border border-[#00000066] rounded-lg p-2" bind:value={categoriasACadatsrar}></textarea>
             <div class="flex w-full gap-3 justify-center {loading ? 'pointer-events-none' : ''}">
                 <MainButton padding={'p-1'} bg={'bg-gray-600'} action={() => registerCategories = false} label="Cancelar"/>
-                <MainButton padding={'p-1'} bg={'bg-[#3E9830]'} action={() => registrarCategorias('')} label="Registrar"/>
+                <MainButton padding={'p-1'} bg={'bg-[#3E9830]'} action={() => registrarCategorias()} label="Registrar"/>
             </div>
         </div>
     </div>
