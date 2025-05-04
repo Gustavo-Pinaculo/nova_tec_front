@@ -58,6 +58,21 @@ class Validators{
         if(!regexState.test(state)) return 'Informe um estado com formato válido';
         return '';
     }
+    validateNumber(number: string) {
+        const regexNumber = /^\d+$/;
+        if(!regexNumber.test(number)) return 'Informe um número com formato válido';
+        return '';
+    }
+    validateMoney(money: string) {
+        const raw = money.replace(/[^\d]/g, ''); // remove tudo que não for número
+        if (!raw || raw.length < 3) return 'Informe um valor com formato válido';
+      
+        const numeric = (parseInt(raw, 10) / 100).toFixed(2);
+        const regexMoney = /^\d+\.\d{2}$/;
+        if (!regexMoney.test(numeric)) return 'Informe um valor com formato válido';
+      
+        return '';
+      }
 }
 
 const validators = new Validators();
