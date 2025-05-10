@@ -1,4 +1,4 @@
-import axios, { type AxiosError, type AxiosInstance, type InternalAxiosRequestConfig } from "axios";
+import axios, { AxiosError, type AxiosInstance, type InternalAxiosRequestConfig } from "axios";
 
 import { PUBLIC_BACKEND_URL } from "$env/static/public";
 import { browser } from "$app/environment";
@@ -36,6 +36,18 @@ class ApiService{
             res = await this.axiosInstance.request({method, url, data});
         }catch(e){
             err = e;
+           
+            if (e instanceof AxiosError && e.response?.data.code === 'token_not_valid') {
+                const formData = new FormData();
+                formData.append('refresh', localStorage.getItem("nova-tec-refresh") || '');
+                const[res, err] = await this.makeRequest('post', '/user/token/refresh/', formData, {headers:{'Content-Type': 'multipart/form-data'}});
+
+                if(err){
+                    return [null, err];
+                }
+                localStorage.setItem("nova-tec-token", res.data.access);  
+                this.makeRequest(method, url, data, config); 
+            }
         }
         return [res, err];
     }
