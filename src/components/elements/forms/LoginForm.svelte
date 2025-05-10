@@ -16,6 +16,8 @@
 		if (err) return toast.error('Erro ao efetuar login', err);
 
         localStorage.setItem('nova-tec-token', res.data.access);
+        localStorage.setItem('nova-tec-refresh', res.data.refresh);
+
 		toast.success('Login realizado com sucesso!', 'Você sera redirecionado para o dashboard.');
 		goto('/dashboard');
 	}
