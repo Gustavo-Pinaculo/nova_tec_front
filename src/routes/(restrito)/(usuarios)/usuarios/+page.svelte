@@ -47,8 +47,8 @@
     }
     async function deletarUsuario(){
         const [_, err] = await usuariosController.deletar(selected)
-        if(err) return toast.error('Erro ao deletar usuário', err)
         resetModals()
+        if(err) toast.error('Erro ao deletar usuário', err)
         listarUsuarios()
     }
 

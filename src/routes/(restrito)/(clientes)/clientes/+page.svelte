@@ -48,7 +48,10 @@
     async function deletarCliente(){
         deleting = true
         const [_, err] = await clientesController.deletarCliente(selected)
-        if(err) return toast.error('Erro ao deletar cliente', err)
+        if(err) {
+            deleting = false
+            return toast.error('Erro ao deletar cliente', err)
+        }
         resetModals()
         await listarClientes(1)
         toast.success('Sucesso','Cliente deletado!')

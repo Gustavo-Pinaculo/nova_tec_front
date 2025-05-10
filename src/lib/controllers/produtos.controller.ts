@@ -15,7 +15,7 @@ export class ProdutosController {
     }
     async editarProduto(produto:any, id:string){
         sendSignal(Signal.VALIDAR_INPUTS); 
-        return await apiService.patch('/order/product/'+id, produto);
+        return await apiService.patch('/order/product/'+id+'/', produto);
     }
     async deletarProduto(id:string){
         return await apiService.delete('/order/product/'+id);

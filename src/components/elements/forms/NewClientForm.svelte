@@ -65,7 +65,7 @@
         if(err) return toast.error('Erro ao cadastrar cliente', err.message);
         toast.success('Sucesso', edition ? 'Cliente editado!' : 'Cliente cadastrado!');
         resetForm();
-        goto('/clientes');
+        window.location.reload();
     }
 
     $effect(()=>{
@@ -80,7 +80,7 @@
         const data = res.data;
         body.name = data.name;
         body.cpf_cnpj = data.cpf_cnpj;
-        body.cep = data.cep;
+        body.cep = data.cep ?? '';
         body.city = data.city;
         body.street = data.street;
         body.district = data.district;

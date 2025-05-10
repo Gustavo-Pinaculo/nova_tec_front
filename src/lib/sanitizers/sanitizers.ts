@@ -217,10 +217,11 @@ class Sanitizer {
         } 
         return input
     }
-    reais(input:string) {
-      input = input.replace(/\D/g, '');
-      input = (parseInt(input, 10) / 100).toFixed(2);
-      return `R$ ${input.replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`;
+    reais(input:string|number) {
+        if(typeof input === 'number') input = input.toString()
+        input = input.replace(/\D/g, '');
+        input = (parseInt(input, 10) / 100).toFixed(2);
+        return `R$ ${input.replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`;
     }
     
     nomeComAcentoSemPontuacao(input: string) {

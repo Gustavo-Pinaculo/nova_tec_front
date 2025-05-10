@@ -9,7 +9,7 @@ class SidebarController {
     static pages = [
         { label: 'Início', route: '/dashboard', icon: '/icons/dashboard-icon.svg' },
         { label: 'Pedidos', route: '/pedidos', icon: '/icons/pedidos-icon.svg' },
-        { label: 'Produtos', route: '/produtos', icon: '/icons/pedidos-icon.svg' },
+        { label: 'Produtos', route: '/produtos', icon: '/icons/produtos-icon.svg' },
         { label: 'Clientes', route: '/clientes', icon: '/icons/clientes-icon.svg' },
         { label: 'Usuários', route: '/usuarios', icon: '/icons/usuario-icon.svg' },
         { label: 'Relatórios', route: '/relatorios', icon: '/icons/relatorios-icon.svg' },

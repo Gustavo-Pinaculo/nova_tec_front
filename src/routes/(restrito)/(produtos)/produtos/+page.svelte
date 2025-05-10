@@ -5,7 +5,7 @@
 	import SvgChevr from "$components/assets/svg/SvgChevr.svelte";
 	import toast from "$lib/utils/toasts.svelte";
 	
-	import { ProdutosController } from "$lib/controllers/produtos.controller";
+	import { ProdutosController, statusOptions, type produto } from "$lib/controllers/produtos.controller";
     import { goto } from "$app/navigation";
 	import { onMount } from "svelte";
 	import EmptyState from "$components/sections/layout/EmptyState.svelte";
@@ -14,20 +14,49 @@
 
     const headers = [
         { label:'Seleção', colSpan:'col-span-1' },
-        { label:'ID', colSpan:'col-span-1' },
-        { label:'Nome', colSpan:'col-span-3' },
+        { label:'Nome', colSpan:'col-span-2' },
+        { label:'Preço', colSpan:'col-span-1' },
+        { label:'Quantidade', colSpan:'col-span-1' },
         { label:'Status', colSpan:'col-span-1' },
         { label:'Ações', colSpan:'col-span-1' }
     ]
 
     let openFilters:boolean = $state(false)
     let produtos:any[] = $state([])
+    let openDelete = $state(false)
+    let deleting = $state(false)
+    let selected = $state('')
+    let page = $state(1)
+
+    function resetModals(){
+        deleting = false
+        openDelete = false
+        selected = ''
+    }
+    function prepararDeletar(id:string){
+        selected = id
+        openDelete = true
+    }
+
+    async function deletarProduto(){
+        deleting = true
+        const [_, err] = await produtosController.deletarProduto(selected)
+        if(err) {
+            deleting = false
+            return toast.error('Erro ao deletar produto', err)
+        }
+        resetModals()
+        await listarProdutos()
+        toast.success('Sucesso','Produto deletado!')
+    }
+    async function listarProdutos() {
+        const [res, err] = await produtosController.listarProdutos(page)
+        if(err) return toast.error('Erro ao listar produtos', err)
+        produtos = res.data.results as produto[]
+    }
 
     onMount(async() => {
-        const [res, err] = await produtosController.listarProdutos(1)
-        if(err) return toast.error('Erro ao listar produtos', err)
-        produtos = res.data.results
-        console.log(produtos)
+        listarProdutos()
     })
 
 </script>
@@ -47,25 +76,42 @@
 {/snippet}
 
 {#snippet tabela()}
-    {#each headers as _, i}
+    {#each produtos as { name, price, quantity, status, is_active, id }, i}
+    {@const stts = statusOptions.find(stt => stt.value == status)?.label }
         <div class="w-full px-3 py-1.5 text-sm font-light bg-white text-sub-600 grid grid-cols-7 last:rounded-b-lg gap-8 not-last:border-b border-[#25384B]">
             <div class="flex {headers[0].colSpan} text-sm font-medium">
                 <input type="checkbox" name="" id="item-{i}">
             </div>
             <div class="flex {headers[1].colSpan} text-sm font-medium">
-                {i}
+                {name}
             </div>
             <div class="flex {headers[2].colSpan} text-sm font-medium">
-                Camiseta
-            </div>
+                R$ {price.toFixed(2).replace('.',',')}
+            </div> 
             <div class="flex {headers[3].colSpan} text-sm font-medium">
-                Ativo
+                {quantity}
             </div>
             <div class="flex {headers[4].colSpan} text-sm font-medium">
-                <MenuSuspenso opcoes={[{label:'Editar',action:()=>{console.log('editar')}},{label:'Deletar',action:()=>{console.log('deletar')}}]}/>
+                {stts} ({is_active ? 'Ativo' : 'Inativo'})
+            </div>
+            <div class="flex {headers[5].colSpan} text-sm font-medium">
+                <MenuSuspenso opcoes={[{label:'Editar',action:()=>goto(`/editar-produto?id=${id}`)},{label:'Deletar',action:()=>prepararDeletar(id)}]}/>
             </div>
         </div>
     {/each}
+{/snippet}
+
+{#snippet deleteModal()}
+    {@const cliente = produtos.find(c => c.id === selected)}
+    <div class="fixed w-full h-full flex items-center justify-center bg-[#F5F5F680]">
+        <div class="bg-white w-[450px] rounded-lg p-3 gap-4 flex flex-col items-center justify-between relative shadow-[0px_4px_4px_rgba(0,0,0,0.25)]">
+            <h4 class="font-semibold">Deseja realmente deletar o cliente {cliente.name}?</h4>
+            <div class="flex gap-3 items-center {deleting ? 'pointer-events-none' : ''}">
+                <MainButton padding={'p-1'} bg={'bg-gray-600'} action={() => resetModals()} label="Cancelar"/>
+                <MainButton padding={'p-1'} bg={'bg-red-600'} action={() => deletarProduto()} label="Deletar"/>
+            </div>
+        </div>
+    </div>
 {/snippet}
 
 {@render header()}
@@ -76,5 +122,8 @@
     <EmptyState>
         <h3 class="font-bold text-2xl">Nenhum produto encontrado</h3>
     </EmptyState>
+{/if}
+{#if openDelete}
+    {@render deleteModal()}
 {/if}
 

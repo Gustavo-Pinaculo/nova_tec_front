@@ -32,6 +32,7 @@
     let { categories = $bindable(), registerCategories = $bindable() } = $props();
     let updating = $state(false);
     let edition = $state(false);
+    let mounted = $state(false);
     let categorie = $state('');
 
     function resetForm(){
@@ -57,6 +58,18 @@
         if(err) return toast.error('Erro ao cadastrar cliente', err.message);
         toast.success('Sucesso', edition ? 'Cliente editado!' : 'Cliente cadastrado!');
         resetForm();
+        window.location.reload();
+    }
+    async function lidarComEdicao(){
+        if(updating) return;
+        updating = true;
+        const bodySend = {...body}
+        bodySend.price = body.price.split('R$ ').join('').toString();
+        const [_, err] = await clientesController.editarProduto(bodySend, id!);
+        updating = false;
+        if(err) return toast.error('Erro ao cadastrar cliente', err.message);
+        toast.success('Sucesso', edition ? 'Cliente editado!' : 'Cliente cadastrado!');
+        resetForm();
         goto('/produtos');
     }
 
@@ -68,17 +81,20 @@
     });
 
     onMount(async() => {
-        if(!id) return;
-        const [res, err] = await clientesController.buscarProduto(id);
+        if(!id && !mounted) return;
+        if(mounted) return;
+        mounted = true;
+        const [res, err] = await clientesController.buscarProduto(id!);
         if(err) return toast.error('Erro ao buscar cliente', err.message);
         edition = true;
         const data = res.data;
         body.name = data.name;
-        body.categories = data.categories;
-        body.price = data.price;
+        body.categories = data.categories.map((c: any) => c.id);
+        body.price = (data.price * 100).toString();
         body.notes = data.notes;
         body.quantity = data.quantity;
         body.status = data.status;
+        categorie = data.categories.map((c: any) => c.id).join(',');
     })
 </script>
 
@@ -113,7 +129,7 @@
 
     <!-- Terceira linha do form -->
     <div class="col-span-10 flex justify-end {updating ? 'pointer-events-none opacity-50' : ''}">
-        <MainButton label="Salvar" action={lidarCadastro}/>
+        <MainButton label="Salvar" action={edition ? lidarComEdicao : lidarCadastro}/>
     </div>
 
 </div>

@@ -10,7 +10,8 @@
       tip?: string;
       validate?:(value:string)=>string;
       disabled?: boolean;
-      multiple?:boolean
+      multiple?:boolean;
+      multipleSelection?:any[];
     }
   
     let {
@@ -22,6 +23,7 @@
       disabled,
       options,
       multiple = false,
+      multipleSelection = $bindable([]),
     }: Props = $props();
   
     let focused = $state<boolean>(false)
@@ -41,17 +43,12 @@
             selected = options.find(o => o.value === v)!.label;
             return;
         }
-        let lista = value
-            .split(',')
-            .map(s => s.trim())
-            .filter(Boolean); // remove vazios
-
+        let lista = value.split(',').map(s => s.trim()).filter(Boolean);
         if (lista.includes(v)) {
             lista = lista.filter(item => item !== v);
         } else {
             lista.push(v);
         }
-
         value = lista.join(',');
         selected = `${lista.length} ${lista.length === 1 ? 'seleção' : 'seleções'}`;
     }
@@ -63,14 +60,19 @@
     $effect(() => {
         if(focused) error = ''
         if($sinal === Signal.VALIDAR_INPUTS) error = validate(value)
+        if(value.length > 0 && !multiple){
+            selected = options.find(o => o.value === value)!.label
+        } else if(value.length > 0 && multiple){
+            selected = `${value.split(',').map(s => s.trim()).filter(Boolean).length} ${value.split(',').map(s => s.trim()).filter(Boolean).length === 1 ? 'seleção' : 'seleções'}`
+        }
     });
 </script>
 
 <div class="flex flex-col gap-1">
-    <div class="flex flex-col gap-2 relative border {disabled ? 'pointer-events-none' : ''} {focused ? 'border-[#25384B]' : 'border-[#00000066]'} rounded-xl"
+    <div class="flex flex-col gap-2 relative border {disabled ? 'pointer-events-none' : ''} {focused || selected !== "" ? 'border-[#25384B]' : 'border-[#00000066]'} rounded-xl"
         title={tip}>
         <button class="text-sm text-start font-medium px-3 h-10 max-h-10 {focused || selected !== "" ? 'text-[#25384B]' : 'text-[#21252966]'}" onclick={handleOpen}>
-            {selected === "" || value.length === 0 ? label : selected}
+            {selected === "" ? label : selected}
             {#if mandatory && value.length === 0}
                 <span class="text-red-700">*</span>
             {/if}

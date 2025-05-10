@@ -78,9 +78,8 @@
           <input {disabled} type="password" name="input" bind:value onfocus={handleFocus} onblur={handleBlur} onkeydown={handleEnter}
           class="w-full outline-none text-sm disabled:text-disabled-300" />
         {/if}
-          <button onclick={() => security = !security} class='text-xs font-medium text-[#25384B]'>
-            {!security ?'Ver': 'Ocultar'}
-            <!-- <img src="/icons/eye-icon.svg" alt="" class="absolute right-2 cursor-pointer" /> -->
+        <button onclick={() => security = !security} class='text-xs font-medium text-[#25384B] w-5'>
+              <img src={security ? '/icons/eye-closed-svgrepo-com.svg' : '/icons/eye-svgrepo-com.svg'} alt="">
           </button>
         </div>
   </div>
