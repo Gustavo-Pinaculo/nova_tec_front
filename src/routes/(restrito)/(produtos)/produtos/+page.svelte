@@ -106,7 +106,7 @@
 
 {#snippet header()}
     <div class="flex justify-between items-center w-full">
-        <h1 class="font-bold">Produtos e Materiais</h1>
+        <h1 class="font-bold">Produtos</h1>
         <span class="flex gap-2 items-center">
             <MainButton action={() => goto('/novo-produto')} label="Novo produto"/>
             <MainButton action={() => cadastrarCategoria = true} label="Nova categoria"/>
@@ -117,7 +117,7 @@
 {#snippet tabs()}
     <div class="bg-white rounded-xl p-1 gap-1 flex items-center relative shadow-[0px_4px_4px_rgba(0,0,0,0.25)] w-fit">
         {#each menus as m, i}
-            <button onclick={() => menuAtivo = i} class="p-2 gap-2 flex rounded-lg items-center {menuAtivo === i ? 'bg-[#25384B] text-white' : 'bg-gray-100'}">
+            <button onclick={() => menuAtivo = i} class="py-2 px-5 gap-2 flex rounded-lg items-center {menuAtivo === i ? 'bg-[#25384B] text-white' : ''}">
                 <h4 class="font-semibold">{m}</h4>
             </button>
         {/each}
