@@ -36,20 +36,20 @@ class ApiService{
             res = await this.axiosInstance.request({method, url, data});
         }catch(e){
             err = e;
-           
             if (e instanceof AxiosError && e.response?.data.code === 'token_not_valid') {
-                const formData = new FormData();
-                formData.append('refresh', localStorage.getItem("nova-tec-refresh") || '');
-                const[res, err] = await this.makeRequest('post', '/user/token/refresh/', formData, {headers:{'Content-Type': 'multipart/form-data'}});
-
-                if(err){
-                    return [null, err];
-                }
-                localStorage.setItem("nova-tec-token", res.data.access);  
-                this.makeRequest(method, url, data, config); 
+                return await this.refreshToken(method, url, data, config);
             }
         }
         return [res, err];
+    }
+
+    private async refreshToken(method: string, url: string, data?: any, config?: any):Promise<[any,any]>{
+        const formData = new FormData();
+        formData.append('refresh', localStorage.getItem("nova-tec-refresh") || '');
+        const[res, err] = await this.makeRequest('post', '/user/token/refresh/', formData, {headers:{'Content-Type': 'multipart/form-data'}});
+        if(err) return [null, err];
+        localStorage.setItem("nova-tec-token", res.data.access);
+        return await this.makeRequest(method, url, data, config);
     }
 
     public async get(url: string):Promise<[any,any]>{
