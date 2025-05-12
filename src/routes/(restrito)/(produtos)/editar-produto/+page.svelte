@@ -8,13 +8,13 @@
     const categoriasController = new CategoriasController();
 
     let categories = $state<{value:string, label:string}[]>([]);
-    let categoriasACadatsrar = $state<string>('');
+    let categoriasACadastrar = $state<string>('');
     let registerCategories = $state(false);
     let loading = $state(false);
 
     async function registrarCategorias() {
         loading = true;
-        const categorias = categoriasACadatsrar.split(',').map(c => c.trim()).filter(Boolean);
+        const categorias = categoriasACadastrar.split(',').map(c => c.trim()).filter(Boolean);
         try {
             const promises = categorias.map(categoria => {
                 const formData = new FormData();
@@ -57,10 +57,10 @@
         <div class="bg-white w-[450px] rounded-lg p-3 gap-4 flex flex-col relative shadow-[0px_4px_4px_rgba(0,0,0,0.25)]">
             <h4 class="font-semibold">Insira as categorias que deseja cadastrar</h4>
             <p class="text-sm text-[#212529]">Adicione as categorias em linha separadas por vírgula.<br> Ex: Categoria 1, Categoria 2</p>
-            <textarea class="w-full outline-none text-sm border border-[#00000066] rounded-lg p-2" bind:value={categoriasACadatsrar}></textarea>
+            <textarea class="w-full outline-none text-sm border border-[#00000066] rounded-lg p-2" bind:value={categoriasACadastrar}></textarea>
             <div class="flex w-full gap-3 justify-center {loading ? 'pointer-events-none' : ''}">
                 <MainButton padding={'p-1'} bg={'bg-gray-600'} action={() => registerCategories = false} label="Cancelar"/>
-                <MainButton padding={'p-1'} bg={'bg-[#3E9830]'} action={() => registrarCategorias()} label="Registrar"/>
+                <MainButton padding={'p-1'} bg={'bg-[#3E9830]'} action={registrarCategorias} label="Registrar"/>
             </div>
         </div>
     </div>

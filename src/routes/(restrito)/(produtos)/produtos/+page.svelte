@@ -9,6 +9,7 @@
     import { goto } from "$app/navigation";
 	import { onMount } from "svelte";
 	import EmptyState from "$components/sections/layout/EmptyState.svelte";
+	import DetailsSection from "$components/sections/layout/DetailsSection.svelte";
 
     const produtosController = new ProdutosController()
 
@@ -19,15 +20,17 @@
         { label:'Quantidade', colSpan:'col-span-1' },
         { label:'Status', colSpan:'col-span-1' },
         { label:'Ações', colSpan:'col-span-1' }
-    ]
+    ];
+    const menus = [ 'Produtos', 'Materiais' ]
 
     let openFilters:boolean = $state(false)
     let produtos:any[] = $state([])
     let openDelete = $state(false)
     let deleting = $state(false)
+    let menuAtivo = $state(1)
     let selected = $state('')
     let page = $state(1)
-
+    
     function resetModals(){
         deleting = false
         openDelete = false
@@ -58,13 +61,22 @@
     onMount(async() => {
         listarProdutos()
     })
-
 </script>
 
 {#snippet header()}
     <div class="flex justify-between items-center w-full">
-        <h1 class="font-bold">Produtos</h1>
+        <h1 class="font-bold">Produtos e Materiais</h1>
         <MainButton action={() => goto('/novo-produto')} label="Novo produto"/>
+    </div>
+{/snippet}
+
+{#snippet tabs()}
+    <div class="bg-white rounded-xl p-1 gap-1 flex items-center relative shadow-[0px_4px_4px_rgba(0,0,0,0.25)] w-fit">
+        {#each menus as m, i}
+            <button onclick={() => menuAtivo = i} class="p-2 gap-2 flex rounded-lg items-center {menuAtivo === i ? 'bg-[#25384B] text-white' : 'bg-gray-100'}">
+                <h4 class="font-semibold">{m}</h4>
+            </button>
+        {/each}
     </div>
 {/snippet}
 
@@ -114,16 +126,24 @@
     </div>
 {/snippet}
 
+{#snippet details()}
+    <DetailsSection/>
+{/snippet}
+
 {@render header()}
-{@render filtros()}
-{#if produtos.length > 0}
-    <Tabela {headers} children={tabela} gridCols="grid-cols-7"/>
+{@render tabs()}
+{#if menuAtivo === 0}
+    {@render filtros()}
+    {#if produtos.length > 0}
+        <Tabela {headers} children={tabela} gridCols="grid-cols-7"/>
+    {:else}
+        <EmptyState>
+            <h3 class="font-bold text-2xl">Nenhum produto encontrado</h3>
+        </EmptyState>
+    {/if}
 {:else}
-    <EmptyState>
-        <h3 class="font-bold text-2xl">Nenhum produto encontrado</h3>
-    </EmptyState>
+    {@render details()}
 {/if}
 {#if openDelete}
     {@render deleteModal()}
 {/if}
-
