@@ -43,7 +43,7 @@
         <h3 class="font-semibold">Cliente</h3>
         <button class="p-2 gap-2 col-span-2 flex items-center bg-[#25384B] rounded-xl" onclick={()=>goto('/novo-cliente')}>
             <img src="/icons/add-svgrepo-com.svg" alt="" class="w-5">
-            <p class="text-white tex-sm font-medium">Adicionar cleinte</p>
+            <p class="text-white tex-sm font-medium">Adicionar cliente</p>
         </button>
     </span>
     <MainSelect label='Selecione o cliente' bind:value={clienteSelecionado} options={clientes}/>
