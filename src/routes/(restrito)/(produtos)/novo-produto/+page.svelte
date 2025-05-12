@@ -4,6 +4,7 @@
 	import { CategoriasController } from '$lib/controllers/categorias.controller';
 	import toast from '$lib/utils/toasts.svelte';
 	import { onMount } from 'svelte';
+	import CriarCategorias from '$components/elements/modals/CriarCategorias.svelte';
 
     const categoriasController = new CategoriasController();
 
@@ -52,20 +53,6 @@
     </div>
 {/snippet}
 
-{#snippet registroDeCategorias()}
-    <div class="fixed w-full h-full flex items-center justify-center bg-[#F5F5F680]">
-        <div class="bg-white w-[450px] rounded-lg p-3 gap-4 flex flex-col relative shadow-[0px_4px_4px_rgba(0,0,0,0.25)]">
-            <h4 class="font-semibold">Insira as categorias que deseja cadastrar</h4>
-            <p class="text-sm text-[#212529]">Adicione as categorias em linha separadas por vírgula.<br> Ex: Categoria 1, Categoria 2</p>
-            <textarea class="w-full outline-none text-sm border border-[#00000066] rounded-lg p-2" bind:value={categoriasACadastrar}></textarea>
-            <div class="flex w-full gap-3 justify-center {loading ? 'pointer-events-none' : ''}">
-                <MainButton padding={'p-1'} bg={'bg-gray-600'} action={() => registerCategories = false} label="Cancelar"/>
-                <MainButton padding={'p-1'} bg={'bg-[#3E9830]'} action={() => registrarCategorias()} label="Registrar"/>
-            </div>
-        </div>
-    </div>
-{/snippet}
-
 {@render header()}
 <div class="w-full bg-white p-3 flex flex-col gap-3 rounded-lg shadow-[0px_4px_4px_rgba(0,0,0,0.25)]">
     <h3 class="font-semibold">Insira os dados do novo produto</h3>
@@ -73,5 +60,5 @@
 </div>
 
 {#if registerCategories}
-    {@render registroDeCategorias()}
+    <CriarCategorias {registrarCategorias} closeModal={() => registerCategories = false} bind:loading bind:categoriasACadastrar/>
 {/if}

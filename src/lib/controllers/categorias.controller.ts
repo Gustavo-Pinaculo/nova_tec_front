@@ -10,4 +10,10 @@ export class CategoriasController {
     async cadastrarCategoria(categoria:FormData){
         return await apiService.postFormData('/order/category/', categoria);
     }
+    async editarCategoria(categoria:FormData, id:string){
+        return await apiService.patchFormData('/order/category/'+id, categoria);
+    }
+    async deletarCategoria(id:string){
+        return await apiService.delete('/order/category/'+id+'/');
+    }   
 }

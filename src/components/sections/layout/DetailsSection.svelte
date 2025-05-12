@@ -140,7 +140,7 @@
 
 <div class="w-full grid grid-cols-4 gap-4 overflow-auto h-1/2">
     {#each [pinturas, tecidos, camisas, golas] as detalhe, index}
-        <div class="col-span-1 bg-white p-3 flex flex-col gap-3 rounded-lg shadow-[0px_4px_4px_rgba(0,0,0,0.25)] mb-3">
+        <div class="col-span-1 bg-white p-3 flex flex-col gap-2 rounded-lg shadow-[0px_4px_4px_rgba(0,0,0,0.25)] mb-3">
             <span class="flex w-full justify-between items-center">
                 <h3 class="font-semibold">{headers[index]}</h3>
                 <button onclick={()=>lidarComAdicao(index)} class="p-1 gap-2 w-7 h-7 flex items-center bg-[#3E9830] rounded-sm" title={`Adicionar ${headers[index]}`}>
@@ -149,10 +149,10 @@
             </span>
             {#if detalhe.length > 0}
                 {#each detalhe as {name, id}}
-                    <div class="w-full bg-white p-3 flex flex-col gap-3 border-b border-[#00000033]">
+                    <div class="w-full bg-white flex flex-col border-b border-[#00000033]">
                         <span class="flex w-full justify-between">
                             <h4 class="font-semibold">{name}</h4>
-                            <span class="flex gap-4 items-center">
+                            <span class="flex gap-2 items-center">
                                 <button class="p-2 gap-2 col-span-2 flex items-center rounded-xl" onclick={()=>lidarComEdicao(id, index)}>
                                     <img src="/icons/edit-icon.svg" alt="" class="w-5">
                                 </button>
