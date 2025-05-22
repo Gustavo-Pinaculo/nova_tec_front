@@ -30,7 +30,7 @@
     let produtos:any[] = $state([])
     let deleting = $state(false)
     let loading = $state(false)
-    let menuAtivo = $state(2)
+    let menuAtivo = $state(0)
     let selected = $state('')
     let page = $state(1)
 
