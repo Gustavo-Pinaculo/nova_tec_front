@@ -43,7 +43,6 @@
         const [res, err] = await usuariosController.listar(page)
         if(err) return toast.error('Erro ao listar usuários', err)
         usuarios = res.data.results
-        console.log(usuarios)
     }
     async function deletarUsuario(){
         const [_, err] = await usuariosController.deletar(selected)

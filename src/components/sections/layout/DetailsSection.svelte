@@ -57,7 +57,7 @@
         pinturas = pinturasData.data.results;
     }
     async function registrarMateriais(){
-        if (bloqueado) return;
+        if (bloqueado === true || openAdicao === false) return;
         bloqueado = true;
 
         loading = true;
@@ -74,11 +74,11 @@
             return detalhesController.registrarMaterial(formData, tipo);
         });
         await Promise.all(promises);
-        await listarDetalhes();
         openAdicao = false;
-        loading = false;
         bloqueado = false;
+        loading = false;
         itensACadastrar = '';
+        await listarDetalhes();
     }
     async function editarMaterial(novoNome:string){
         const formData = new FormData();

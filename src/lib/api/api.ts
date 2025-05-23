@@ -33,7 +33,7 @@ class ApiService{
         let err = null;
         try{
             if(config) res = await this.axiosInstance.request({method, url, data, ...config});
-            res = await this.axiosInstance.request({method, url, data});
+            else res = await this.axiosInstance.request({method, url, data});
         }catch(e){
             err = e;
             if (e instanceof AxiosError && e.response?.data.code === 'token_not_valid') {

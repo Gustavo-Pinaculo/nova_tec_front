@@ -4,17 +4,26 @@
 	
     import { goto } from "$app/navigation";
 	import { onMount } from "svelte";
+	import apiService from "$lib/api/api";
+	import { page } from "$app/state";
 
     let { children } = $props();
     let hasPermission = $state(false)
 
+    async function getUserDetails() {
+        const [user, err] = await apiService.get('/user/user/me/')
+        if(err) return toast.error('Erro ao buscar dados do usuário', err)
+        if(page.url.origin.includes('localhost')) console.log(user)
+    }
+
     onMount(() => {
-        //Descomente as linhas abaixo para que o conteúdo seja protegido
-        // if(!localStorage.getItem('nova-tec-token')) {
-        //     toast.error('Acesso negado!', 'Voce precisa estar logado para acessar essa pagina!');
-        //     goto('/login');
-        //     return;
-        // }
+        //Descomente as linhas abaixo para que o conteúdo seja protegido, ou comente para desproteger
+        if(!localStorage.getItem('nova-tec-token')) {
+            toast.error('Acesso negado!', 'Voce precisa estar logado para acessar essa pagina!');
+            goto('/login');
+            return;
+        }
+        // getUserDetails();
         hasPermission = true
     })
 </script>
