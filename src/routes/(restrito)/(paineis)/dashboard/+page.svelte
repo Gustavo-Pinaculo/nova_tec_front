@@ -17,10 +17,10 @@
 	}
 </script>
 
-<div class="container flex h-full w-full flex-col gap-4">
+<div class="flex h-full w-full flex-col gap-4">
 	<h2 class="font-montserrat mb-2 text-2xl text-[#797B7E]">Seja bem-vindo {body.name}!</h2>
 
-	<div class="container w-screen rounded-lg bg-white p-3 shadow-md">
+	<div class="w-full rounded-lg bg-white p-3 shadow-md">
 		<h3 class="font-montserrat">Cadastros</h3>
 	</div>
 	<div class="grid w-full grid-cols-10 gap-2">
@@ -44,7 +44,7 @@
 		</div>
 	</div>
 
-	<div class="container w-screen rounded-lg bg-white p-3 shadow-md">
+	<div class="w-full rounded-lg bg-white p-3 shadow-md">
 		<h3 class="font-montserrat font-semibold">Pedidos</h3>
 	</div>
 	<!-- TODO: lista de pedidos -->
