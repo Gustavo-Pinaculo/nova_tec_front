@@ -7,7 +7,6 @@
 	import validators from '$lib/sanitizers/validators';
 	import sanitizar from '$lib/sanitizers/sanitizers';
 	import toast from '$lib/utils/toasts.svelte';
-	import { goto } from '$app/navigation';
 	import apiService from '$lib/api/api';
 	import { onMount } from 'svelte';
 
@@ -43,8 +42,8 @@
 		let message = '';
 		if (body.username.length < 3) message = 'O nome deve ter pelo menos 3 letras';
 		if (validators.validateEmail(body.email ?? '') !== '') message = 'Email inválido';
-		if (validators.validatePassword(body.password ?? '') !== '') message = 'Senha inválida';
-		if (body.password !== compararSenha) message = 'As senhas devem ser iguais';
+		// if (validators.validatePassword(body.password ?? '') !== '') message = 'Senha inválida';
+		// if (body.password !== compararSenha) message = 'As senhas devem ser iguais';
 		if (message !== '') {
 			toast.error('Erro ao registrar o usuario', message);
 			return false;
@@ -67,11 +66,18 @@
 		<div class="col-span-10">
 			<h3 class="font-semibold">Dados do Usuario</h3>
 		</div>
-		<div class="col-span-6">
+		<div class="col-span-4">
 			<MainInput
 				label="Nome"
 				bind:value={body.username}
 				validate={(v) => validators.validateFieldValue(v ?? '')}
+			/>
+		</div>
+		<div class="col-span-4">
+			<MainInput
+				label="Email"
+				bind:value={body.email}
+				validate={(v) => validators.validateEmail(v ?? '')}
 			/>
 		</div>
 		<div class="col-span-2">
@@ -80,13 +86,6 @@
 				bind:value={body.cellphone!}
 				sanitize={(v) => sanitizar.telefone(v)}
 				validate={(v) => validators.validatePhone(v ?? '')}
-			/>
-		</div>
-		<div class="col-span-2">
-			<MainInput
-				label="Email"
-				bind:value={body.email}
-				validate={(v) => validators.validateEmail(v ?? '')}
 			/>
 		</div>
 
