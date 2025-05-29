@@ -219,6 +219,7 @@ class Sanitizer {
     }
     reais(input:string|number) {
         if(typeof input === 'number') input = input.toString()
+        if(input.length === 0) return input
         input = input.replace(/\D/g, '');
         input = (parseInt(input, 10) / 100).toFixed(2);
         return `R$ ${input.replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`;

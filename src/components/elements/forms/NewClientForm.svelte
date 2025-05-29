@@ -13,7 +13,8 @@
     const id = new URLSearchParams(window.location.search).get('id');
     const enderecosController = new EnderecosController();
     const clientesController = new ClientesController();
-    const body: cliente = $state({
+    
+    let body: cliente = $state({
         name: '',
         cpf_cnpj: '',
         cep: '',
@@ -78,15 +79,17 @@
         if(err) return toast.error('Erro ao buscar cliente', err.message);
         edition = true;
         const data = res.data;
-        body.name = data.name;
-        body.cpf_cnpj = data.cpf_cnpj;
-        body.cep = data.cep ?? '';
-        body.city = data.city;
-        body.street = data.street;
-        body.district = data.district;
-        body.state = data.state;
-        body.number = data.number;
-        body.whatsapp = data.whatsapp;
+        body = {
+            name: data.name,
+            cpf_cnpj: data.cpf_cnpj,
+            cep: data.cep,
+            city: data.city,
+            street: data.street,
+            district: data.district,
+            state: data.state,
+            number: data.number,
+            whatsapp: data.whatsapp
+        }
     })
 </script>
 
