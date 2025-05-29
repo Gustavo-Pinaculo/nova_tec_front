@@ -94,6 +94,14 @@
     }
 
     onMount(async() => {
+        const novo = new URLSearchParams(window.location.search).get('novo');
+        if(novo) {
+            const tipos = ['pintura', 'tecido', 'camisa', 'gola'];
+            if(tipos.includes(novo)) {
+                openAdicao = true;
+                tipo = novo;
+            }
+        }
         await listarDetalhes();
     })
 </script>

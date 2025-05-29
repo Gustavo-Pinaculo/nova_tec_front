@@ -29,5 +29,6 @@ export type usuario = {
     whatsapp_messages?: boolean,
     receive_emails?: boolean,
     deleted_by?: string,
-    user_permissions: string[]
+    user_permissions: string[],
+    cellphone?: string,
 }

@@ -99,6 +99,14 @@
     })
 
     onMount(async() => {
+        const query = new URLSearchParams(window.location.search);
+        if(query.get('tab') && query.get('novo')) {
+            menuAtivo = parseInt(query.get('tab') || '0');  
+            const novo = query.get('novo');
+            if(novo === 'categoria') {
+                cadastrarCategoria = true;
+            } 
+        }
         listarProdutos()
         listarCategorias()
     })
