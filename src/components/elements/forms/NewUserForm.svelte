@@ -6,8 +6,8 @@
 	import sanitizar from '$lib/sanitizers/sanitizers';
 	import toast from "$lib/utils/toasts.svelte";
 
-    import { EnderecosController } from '$lib/enderecos/enderecos.controller';
 	import { UsuariosController, type usuario } from "$lib/controllers/usuarios.controller";
+    import { EnderecosController } from '$lib/enderecos/enderecos.controller';
 	import { sendSignal, Signal } from "$lib/utils/sinalizador";
 	import { goto } from "$app/navigation";
 
@@ -19,27 +19,11 @@
         email: '',
         user_permissions: [],
         password: '',
-        status: 'ACTIVE'
-        // cep: '',
-        // cidade: '',
-        // rua: '',
-        // bairro: '',
-        // estado: '',
-        // numero: '',
-        // whatsapp: '',
+        status: 'ACTIVE',
     })
 
     let permissoes = $state<string>('');
     let compararSenha = $state('');
-
-    // async function getEndereco(cep:string){
-    //     const [res, err] = await enderecosController.enderecoPorCep(cep)
-    //     if(err) return toast.error('Erro ao buscar endereço', err);
-    //     body.cidade = res!.localidade;
-    //     body.rua = res!.logradouro;
-    //     body.bairro = res!.bairro;
-    //     body.estado = res!.uf;
-    // }
 
     function validate():boolean{
         sendSignal(Signal.VALIDAR_INPUTS)
@@ -54,7 +38,7 @@
             toast.error('Erro ao registrar o usuario', message);
             return false
         }
-        return true
+        return true;
     }
 
     async function registrar(){
@@ -64,11 +48,6 @@
         toast.success( 'Sucesso', 'Usuario registrado!');
         goto('/usuarios')
     }
-
-    // $effect(()=>{
-        // if(body.cep.length > 8) getEndereco(body.cep)
-        // if(permissoes) body.user_permissions = permissoes.split(',');
-    // })
 </script>
 
 <div class="w-full px-3 py-1.5 text-sm font-light bg-white text-sub-600 grid grid-cols-10 gap-4">
@@ -80,28 +59,6 @@
             <MainInput label="CPF/CNPJ" bind:value={body.cpf_cnpj} sanitize={(v)=>sanitizar.cpfcnpj(v)} validate={(v) => validators.validateCpfCnpj(v ?? '')}/>
         </div>
     <!-- Segunda linha do form -->
-        <!-- <div class="col-span-2">
-            <MainInput label="CEP" bind:value={body.cep} sanitize={(v) => sanitizar.cep(v)} validate={(v) => validators.validateCep(v ?? '')}/>
-        </div>
-        <div class="col-span-2">
-            <MainInput label="Cidade" bind:value={body.cidade} validate={(v) => validators.validateFieldValue(v ?? '')}/>
-        </div>
-        <div class="col-span-2">
-            <MainInput label="Rua" bind:value={body.rua} validate={(v) => validators.validateFieldValue(v ?? '')}/>
-        </div>
-        <div class="col-span-2">
-            <MainInput label="Bairro" bind:value={body.bairro} validate={(v) => validators.validateFieldValue(v ?? '')}/>
-        </div>
-        <div class="col-span-1">
-            <MainInput label="Estado" bind:value={body.estado} validate={(v) => validators.validateState(v ?? '')}/>
-        </div>
-        <div class="col-span-1">
-            <MainInput label="Número" bind:value={body.numero} sanitize={(v) => sanitizar.numero(v)} validate={(v) => validators.validateEmptyField(v ?? '')}/>
-        </div> -->
-    <!-- Terceira linha do form -->
-        <!-- <div class="col-span-2">
-            <MainInput label="Whatsapp" bind:value={body.whatsapp} sanitize={(v) => sanitizar.telefone(v)} validate={(v) => validators.validatePhone(v ?? '')}/>
-        </div> -->
         <div class="col-span-2">
             <MainInput label="Email" bind:value={body.email} validate={(v) => validators.validateEmail(v ?? '')}/>
         </div>
@@ -114,7 +71,7 @@
         <div class="col-span-2">
             <PassInput label="Confirme a Senha" bind:value={compararSenha} validate={(v) => validators.validateEqualityFields(v ?? '', body.password ?? '', 'Senha')}/>
         </div>
-    <!-- Quarta linha do form -->
+    <!-- Terceira linha do form -->
         <div class="col-span-10 flex justify-end">
             <MainButton label="Salvar" action={registrar}/>
         </div>
